@@ -22,7 +22,7 @@ jobs: # 任务集合
               uses: softprops/action-gh-release@v1
               with:
                   files: |
-                      main.js 
+                      dict/main.js 
                       manifest.json 
                       styles.css
                   token: ${{ secrets.GITHUB_TOKEN }}
