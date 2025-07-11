@@ -1,0 +1,30 @@
+name: CI Pipeline Name  # 工作流名称，标识用途
+on:                     # 触发条件定义
+  push:                 # 代码推送事件
+    tags:               # 标签触发
+      - 'v*'            # 以v开头的标签触发（如v1.0）
+  pull_request:         # PR合并触发
+    branches: [ main ]  # 指定分支
+ 
+
+jobs:                   # 任务集合
+  build:                # 任务名称
+    runs-on: ubuntu-latest  # 运行环境（Windows/macOS可选）
+    steps:              # 执行步骤
+    - name: Checkout code
+      uses: actions/checkout@v4  # 拉取代码（[[1]](https://blog.csdn.net/FNAspectOL/article/details/113914816)）
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
+    - run: npm install -g pnpm@latest-10 && pnpm install && pnpm build  # 直接执行命令
+
+    - name: Upload Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          main.js |
+          manifest.json |
+          styles.css
+        token: ${{ secrets.GITHUB_TOKEN }}
+      
